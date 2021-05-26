@@ -131,3 +131,7 @@ EMAIL_HOST_USER = "farmekart@gmail.com"
 EMAIL_HOST_PASSWORD = "farmer@123"
 
 
+ADMINS = [('admin','farmekart@gmail.com')] 
+
+MEDIA_URL = '/images/'
+MEDIA_ROOT=os.path.join(BASE_DIR,'App/static/images/')

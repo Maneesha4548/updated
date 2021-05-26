@@ -1,5 +1,5 @@
 from django.shortcuts import render,redirect
-from FarMeKart.forms import UsregFo,ChpwdForm,UpdPfle,Vegfr,UpdVgtab,Userp,Usperm,UpdPfle1,UpdPfle2
+from FarMeKart.forms import UsregFo,ChpwdForm,UpdPfle,Vegfr,UpdVgtab,Userp,Usperm,UpdPfle1,UpdPfle2,PlaceorderForm
 from django.contrib.auth.decorators import login_required
 from farmer import settings
 from django.core.mail import send_mail
@@ -20,15 +20,7 @@ def remove(request,id):
 	c=Cart.objects.get(id=id)
 	c.delete()
 	return redirect('/cartdetails')
-def veg(re):
-	i = Vegpro.objects.filter(a_id=re.user.id)
-	s = Vegpro.objects.all()
-	k = {}
-	for m in s:
-		g = User.objects.get(id=m.a_id)
-		k[m.id] = m.item_type,m.item_name,m.quantity,m.price,m.impf,m.is_stock,m.create_date,g.username
-	f = k.values()
-	return render(re,'html/veg.html',{'it':i,'d':f})
+
 	
 def home(re):
 	i = Vegpro.objects.filter(a_id=re.user.id)
@@ -167,18 +159,24 @@ def addcart(request,id):
 def usr(re):
 	s=Userp()
 	return render(re,'html/user.html',{'a':s})
-def requestform(rq):
-	e2=User.objects.get(id=rq.user.id)
-	if rq.method=='POST':
-		print(e2)
-		e2.age=rq.POST['age']
-		e2.impf=rq.FILES['fil']
-		e2.address=rq.POST['ad']
-		e2.save()
-		return redirect('/lg')
-	k2= Usperm(instance=e2)
-	return render(rq,'html/requestp.html',{'y':k2})
-
+def requestform(request):
+	if request.method=="POST":
+		u=request.POST.get('uname')
+		e=request.POST.get('email')
+		ut=request.POST.get('utype')
+		ud=request.POST.get('uid')
+		ms=request.POST.get('msg')
+		f=request.FILES['fe']
+		a="Hi welcome "+u+"<br/>" "Requested your Role as "+ut+"<br/>" "Your ID is:"+ud
+		t = EmailMessage("UserRole Change",a,settings.EMAIL_HOST_USER,[settings.ADMINS[0][1],e])
+		t.content_subtype='html'
+		t.attach(f.name,f.read(),f.content_type)
+		t.send()
+		if t==1:
+			return redirect('/reqp')
+		else:
+			return redirect('/lg')
+	return render(request,'html/requestp.html')
 
 def adminpermissions(request):
 	ty=User.objects.all()
@@ -247,7 +245,7 @@ def placeorder(request):
 	for i in c:
 		count=count+1
 		sum=sum+i.veg.price
-		return render(request,'html/placeorder.html',{'sum':sum,'count':count,'cart':c})
+	return render(request,'html/placeorder.html',{'sum':sum,'count':count,'cart':c})
 
 def msg(request):
 	c=Cart.objects.filter(user_id=request.user.id)
@@ -278,6 +276,7 @@ def myorders(request):
 		sum=sum+i.price
 	return render(request,'html/myorders.html',{'sum':sum,'my':my})
 
+
 def checkout(request):
 	c=Cart.objects.filter(user_id=request.user.id)
 	
@@ -291,30 +290,27 @@ def checkout(request):
 			sum=sum+i.veg.price
 			l.append(i.veg.item_name)
 				
-			message='Ordered items ::\n'+' ,'.join(l)+'\n'+ 'will be delivered within 15 days.\n'+'Total amount paid: Rs.'+str(sum)+'\n'+'THANK YOU for Shopping!! \n'
-			subject='Order confirmed'
-			st=settings.EMAIL_HOST_USER
-			if c:
-				at=send_mail(subject,message,st,[receiver])
+		message='Ordered items ::\n'+' ,'.join(l)+'\n'+ 'will be delivered within 15 days.\n'+'Total amount paid: Rs.'+str(sum)+'\n'+'THANK YOU for Shopping!! \n'
+		subject='Order confirmed'
+		st=settings.EMAIL_HOST_USER
+		if c:
+			at=send_mail(subject,message,st,[receiver])
 				
-				for i in x:
-					at.attach(i.name,i.read())
-					at.send()
-				for i in c:
-					sum=sum+i.veg.price
-					a=Myorders(item_name=i.veg.item_name,price=i.veg.price,user_id=request.user.id)
-					a.save()
-					he=Vegpro.objects.filter(id=i.veg_id)
-					for i in he:
-						i.save()
-				c.delete()
-				return redirect('msg')
-			return redirect('msg1')
+			for i in x:
+				at.attach(i.name,i.read())
+				at.send()
+			for i in c:
+				sum=sum+i.veg.price
+				a=Myorders(item_name=i.veg.item_name,price=i.veg.price,user_id=request.user.id)
+				a.save()
+				he=Vegpro.objects.filter(id=i.veg_id)
+				for i in he:
+					i.save()
+			c.delete()
+			return redirect('msg')
+		return redirect('msg1')
 		
 	
 	return render(request,'html/placeorder.html')
 	
-
-
-
 

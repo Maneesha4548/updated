@@ -174,3 +174,12 @@ class Userp(forms.ModelForm):
 
 
 
+class PlaceorderForm(forms.ModelForm):
+	class Meta:
+		model=User
+		fields=["State","Country","Postal_code"]
+		widgets = {
+		"Postal_code":forms.NumberInput(attrs={"class":"form-control my-2","placeholder":"Phone number"}),
+		"Country":forms.TextInput(attrs={"class":"form-control my-2","placeholder":"Country"}),
+		"State":forms.TextInput(attrs={"class":"form-control my-2","placeholder":"State"}),
+		}

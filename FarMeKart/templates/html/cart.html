@@ -47,12 +47,13 @@
 					<form method="POST" action="{% url 'ca' k.id %}">
 						{% csrf_token %}
 						<div class="col">
-					<button type="submit" class="btn btn-success">Add to cart</button>
+					<button type="submit" class="btn btn-primary">Add to cart</button>
 					</div>
 				</form>
-					<div class="col">
-						<span class="btn btn-success text-light col-sm">Farmer price:Rs.{{k.price}}</a>
-					</div>
+					
+					<a href="#" class="btn btn-success text-light  bg-primary col-sm">Farmer Price Rs.{{k.price}}</a>
+						
+				
 
 				</div>
 						</div>
