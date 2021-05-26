@@ -267,6 +267,10 @@ def msg1(request):
 		sum=sum+i.veg.price
 	return render(request,'html/message1.html',{'count':count})
 
+def msg2(request):
+	
+	return render(request,'html/msg2.html')
+
 
 def myorders(request):
 	my=Myorders.objects.filter(user_id=request.user.id)
@@ -325,7 +329,7 @@ def ordercancel(request,si):
 			body="your order has been cancelled"
 			send_mail(sender,body,subject,[receiver])
 			j.save()
-			return HttpResponse('Your order has been cancelled')
+			return redirect('msg2')
 			he=Product.objects.filter(id=i.product_id)
 			for i in he:
 				i.totalquantity+=1

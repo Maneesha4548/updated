@@ -10,6 +10,7 @@ urlpatterns = [
     path('ch/',views.cgf,name="cg"),
     path('ordcancel/<int:si>/',views.ordercancel,name="ordcancel"),
     path('pro/',views.profile,name="pf"),
+    path('msg2/',views.msg2,name="msg2"),
     path('upr/',views.updprofile,name="upf"),
     path('ds/',views.dashboard,name="dsh"),
     path('dsf/',views.farmerdashboard,name="fdsh"),
