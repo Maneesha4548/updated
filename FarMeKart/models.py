@@ -86,9 +86,12 @@ class Cart(models.Model):
 	veg=models.ForeignKey(Vegpro,on_delete=models.CASCADE)
 
 class Myorders(models.Model):
+	# a=[("product quality issues","product quality issues"),("I want to change address/phone number","I want to change address/phone number"),("I have purchased product somewhere else","I have purchased product somewhere else"),("others","others")]
+	
 	item_name=models.CharField(max_length=300)
 	item_type=models.CharField(max_length=300)
 	price=models.IntegerField()
 	is_status=models.IntegerField(default=0)
 	date=models.DateTimeField(auto_now_add='True',null='True')
 	user=models.ForeignKey(User,on_delete=models.CASCADE,null=True)
+	cancel=models.CharField(max_length=200)

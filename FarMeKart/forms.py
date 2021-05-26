@@ -2,11 +2,20 @@ from django.contrib.auth.models import User,AbstractUser
 from django.contrib.auth.forms import UserCreationForm,PasswordChangeForm
 from django import forms
 from FarMeKart.models import Vegpro
-from FarMeKart.models import UserPro
+from FarMeKart.models import UserPro,Myorders
 from django.contrib.auth import get_user_model
 
 User = get_user_model()
 
+class CancelForm(forms.ModelForm):
+	class Meta:
+		model=Myorders
+		fields=["item_name","price"]
+		widgets={
+		"item_name":forms.TextInput(attrs={"class":"form-control"}),
+		"price":forms.TextInput(attrs={"class":"form-control"}),
+		
+		}
 class UsregFo(UserCreationForm):
 	password1=forms.CharField(widget=forms.PasswordInput(attrs={"class":"form-control","placeholder":"Enter Password"}))
 	password2=forms.CharField(widget=forms.PasswordInput(attrs={"class":"form-control","placeholder":"Enter Confirm Password"}))

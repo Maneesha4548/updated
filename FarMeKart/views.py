@@ -1,5 +1,5 @@
 from django.shortcuts import render,redirect
-from FarMeKart.forms import UsregFo,ChpwdForm,UpdPfle,Vegfr,UpdVgtab,Userp,Usperm,UpdPfle1,UpdPfle2,PlaceorderForm
+from FarMeKart.forms import UsregFo,ChpwdForm,UpdPfle,Vegfr,UpdVgtab,Userp,Usperm,UpdPfle1,CancelForm,UpdPfle2,PlaceorderForm
 from django.contrib.auth.decorators import login_required
 from farmer import settings
 from django.core.mail import send_mail
@@ -8,6 +8,7 @@ from django.contrib.auth.models import User,AbstractUser
 from FarMeKart.models import Vegpro,User,Cart,Myorders
 import sys
 import secrets
+from django.http import HttpResponse
 
 # Create your views here.
 
@@ -313,4 +314,23 @@ def checkout(request):
 	
 	return render(request,'html/placeorder.html')
 	
+def ordercancel(request,si):
+	x=Myorders.objects.get(id=si)
+	j=CancelForm(request.POST,instance=x)
+	if request.method=="POST":
+		if j.is_valid():
+			receiver=request.user.email
+			sender=settings.EMAIL_HOST_USER
+			subject="order cancelled"
+			body="your order has been cancelled"
+			send_mail(sender,body,subject,[receiver])
+			j.save()
+			return HttpResponse('Your order has been cancelled')
+			he=Product.objects.filter(id=i.product_id)
+			for i in he:
+				i.totalquantity+=1
+				i.save()
+		x.delete()
+	j=CancelForm(instance=x)
+	return render(request,'html/ordercancel.html',{'prod':j})
 
