@@ -7,7 +7,6 @@ from datetime import date
 from django.contrib.auth.models import AbstractUser,User
 
 
-
 class User(AbstractUser):
 	t = (
 		(1,'Farmer'),
@@ -71,6 +70,7 @@ class Vegpro(models.Model):
 	impf=models.ImageField(upload_to='images/')
 	create_date=models.DateField(auto_now_add=True)
 	a=models.ForeignKey(User,on_delete=models.CASCADE)
+	
 
 class UserPro(models.Model):
 	farmers_name=models.CharField(max_length=10)

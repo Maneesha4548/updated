@@ -1,8 +1,8 @@
 {% extends 'html/header.html' %}
 {% block title %}Customers{% endblock %}
 {% block content %}
-<div class="row" style="padding-top: 100px">
-  <div class="col-md-12">
+<div class="row" style="padding-top: 10px">
+  <div class=" col-md-12">
     <div class="container card">
       <form action="{% url 'msg' %}" method="POST">
         {% csrf_token %}
@@ -28,7 +28,7 @@
             </div>
           </div>
 
-          <div class="col-md-6">
+          <div class="col-md-6 ">
             <h3>Payment</h3>
             <label for="fname">Accepted Cards</label>
             <div class="icon-container">
@@ -71,28 +71,5 @@
     </div>
   </div>
 </div>
-<div class="row mt-3">
-    <div class="container">
-      <a href="" class="btn btn-secondary">CSV</a>
-<table class="table table-striped">
 
-      <tr>
-      <th>item_name</th>
-      <th>price</th>
-      <th></th>
-      </tr>
-      {% for info in cart %}
-      <tr>
-         <td>{{info.veg.item_name}}</td>
-         </td>
-         <td><span class="price">Rs.{{info.veg.price}}</span></td>
-       </tr>
-       {% endfor %}
-       <tr>
-        <th>Total</th>
-        <th><p><b>Rs.{{sum}}</b></p></th>
-       </tr>
-     </table>
-   </div>
- </div>
 {% endblock %}

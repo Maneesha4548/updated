@@ -45,12 +45,9 @@
       <li class="nav-item">
         <a class="nav-link" href="{% url 'da' %}">Add Items</a>
       </li>
-      <!-- <li class="nav-item">
-        <a class="nav-link" href="#">Cart</a>
-      </li>
-       -->
+      
       <li class="nav-item">
-        <a class="nav-link" href="{% url 'fdsh' %}">Received Orders</a>
+        <a class="nav-link" href="{% url 'items' %}">Dashboard</a>
       </li>
       
       {% elif user.is_superuser %}

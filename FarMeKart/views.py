@@ -23,18 +23,7 @@ def remove(request,id):
 	return redirect('/cartdetails')
 
 	
-def home(re):
-	i = Vegpro.objects.filter(a_id=re.user.id)
-	s = Vegpro.objects.all()
-	k = {}
-	for m in s:
-		g = User.objects.get(id=m.a_id)
-		k[m.id] = m.item_type,m.item_name,m.quantity,m.price,m.impf,m.is_stock,m.create_date,g.username
-	f = k.values()
-	return render(re,'html/cart1.html',{'it':i,'d':f})
-	
-# def home(re):
-# 	return render(re,"html/home.html")
+
 def contact(re):
 	return render(re,"html/contact.html")
 
@@ -106,7 +95,15 @@ def vegf(request):
 	s=Vegfr()
 	return render(request,'html/data.html',{'a':s,'e':t})
 
-
+def home(re):
+	i = Vegpro.objects.filter(a_id=re.user.id)
+	s = Vegpro.objects.all() 
+	k = {}
+	for m in s:
+		g = User.objects.get(id=m.a_id)
+		k[m.id] = m.item_type,m.item_name,m.quantity,m.price,m.impf,m.is_stock,m.create_date,g.username
+	f = k.values()
+	return render(re,'html/user.html',{'it':i,'d':f})
 
 
 @login_required
@@ -133,7 +130,7 @@ def itemupdate(request,y):
 
 
 
-@login_required
+
 def items(request):
 	i = Vegpro.objects.filter(a_id=request.user.id)
 	data=Vegpro.objects.all()
@@ -149,7 +146,7 @@ def items(request):
 
 def addcart(request,id):
 	r=Vegpro.objects.get(id=id)
-	if request.method == 'POST':
+	if request.method == 'POST': 
 		p=Cart(user_id=request.user.id,veg_id=id)
 		p.save()
 		
@@ -178,6 +175,8 @@ def requestform(request):
 		else:
 			return redirect('/lg')
 	return render(request,'html/requestp.html')
+
+
 
 def adminpermissions(request):
 	ty=User.objects.all()
@@ -236,7 +235,7 @@ def cartdetails(request):
 	count=0
 	for i in c:
 		count=count+1
-		sum=sum+i.veg.price
+		sum=sum+(i.veg.price)
 	return render(request,'html/cartdetails.html',{'sum':sum,'count':count,'cart':c})
 
 def placeorder(request):
